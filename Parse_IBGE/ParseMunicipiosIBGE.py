@@ -1,9 +1,9 @@
-
 import logging
 import asyncio
 from Model.Municipio import Municipio
-import sys
+from Model.Estados import Estados
 from bs4 import BeautifulSoup as bs
+from asyncio import Task
 
 
 async def obterListaMunicipios(html, listStates):
@@ -11,31 +11,24 @@ async def obterListaMunicipios(html, listStates):
         logging.info('Parse Cities in IBGE ...')
         pages = bs(html, 'lxml').find_all({'table': 'container-uf'})
         pages.pop(00)
-        municipioList = list()
-
-        for page in pages:
-
-            cidade = await replaceIgbe(page)
+        municipioList = list()      
+        i = 0      
+        for page in pages:        
             atribute = page.find_all({'tr': 'municipio data-line'})
-            for atr in atribute:
+            estado = await obterEstado(listStates,i)
+            i +=1
+            for atr in atribute:                    
                 municipio = Municipio(
                     atr.find({'a': 'blank'}).text,
                     atr.find('td', {'class': 'numero'}).text,
-                    cidade)
+                    estado)
                 municipioList.append(municipio)
 
-        logging.info('Parse Cities Sucess !!!')
+        logging.info('Parse Cities Sucessfuly !!!')
         return municipioList
     except Exception as error:
-        return logging.error(error)
-
-
-async def replaceIgbe(page) -> str:
-    if str(page.find({'th'}).text).__contains__('Municípios do '):
-        return str(page.find({'th'}).text).replace('Municípios do ', '')
-
-    if str(page.find({'th'}).text).__contains__('Municípios de '):
-        return str(page.find({'th'}).text).replace('Municípios de ', '')
-
-    if str(page.find({'th'}).text).__contains__('Municípios da '):
-        return str(page.find({'th'}).text).replace('Municípios da ', '')
+        logging.error(error)
+        return  error.args
+    
+async def obterEstado(listStates, i):
+    return listStates[i]  

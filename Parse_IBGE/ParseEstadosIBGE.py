@@ -1,9 +1,6 @@
-import sys
-sys.path.append(r'C:\Users\_TICON\OneDrive\Documents\Projetos Python\Projeto I\First\Model')
 from bs4 import BeautifulSoup as bs
 from Model.Estados import Estados  
 import logging
-
 
 async def obterListaEstados(html):
     try:
@@ -17,15 +14,9 @@ async def obterListaEstados(html):
             'ver municípios', ''), attributes.contents[0].text)
             estadoList.append(estado)
 
-        logging.info('Parse States Sucess !!!')
+        logging.info('Parse States Sucessfuly !!!')
         return estadoList
 
     except Exception as error:
-       return logging.error(error)
-
-    
-   
-
-
-
-
+        logging.error(error)
+        return  error.args
