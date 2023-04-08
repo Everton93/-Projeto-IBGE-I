@@ -10,8 +10,10 @@ async def obterListaEstados(html):
         estadoList = list()
 
         for attributes in atributesPage:
-            estado = Estados(str(attributes.contents[1].text).replace(
-            'ver municípios', ''), attributes.contents[0].text)
+            estado = Estados(str(attributes.contents[1].text)
+                             .replace('ver municípios', ''), 
+                             attributes.contents[0].text,
+                             str(attributes.find('a').attrs).replace("{'href': '#", "").replace("'}", ""))
             estadoList.append(estado)
 
         logging.info('Parse States Sucessfuly !!!')

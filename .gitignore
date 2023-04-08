@@ -1,4 +1,5 @@
 .env
+.gitignore
 Parse_IBGE/__pycache__/ParseEstadosIBGE.cpython-311.pyc
 Parse_IBGE/__pycache__/ParseMunicipiosIBGE.cpython-311.pyc
 Requests_IBGE/__pycache__/RequestsIBGE.cpython-311.pyc

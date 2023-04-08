@@ -2,9 +2,31 @@ import logging
 from azure.servicebus import ServiceBusMessage
 import json
 import jsonpickle
+import boto
+from boto import sqs
+async def sendMessage(senderService ,region,citiesList) -> None:
 
+    try:
+        jsonpickle.set_preferred_backend('json')
+        jsonpickle.set_encoder_options('json', ensure_ascii=False)
 
-async def sendMessage(senderService, citiesList) -> None:
+        logging.debug('sending messages ...')
+
+        
+        for city in citiesList:
+            cityJsonMessage = jsonpickle.dumps(city, unpicklable=False)
+            _message = senderService.new_message(body=cityJsonMessage)            
+            senderService.write(_message)    
+            print("")   
+
+        logging.debug('send message is sucessfuly !!!')
+
+    except Exception as error:
+        logging.error(error)
+        return error.args
+    
+""" Metodo de envio de mensagens pela plataforma AZURE"""    
+""" async def sendMessage(senderService, citiesList) -> None:
 
     try:
         jsonpickle.set_preferred_backend('json')
@@ -21,4 +43,4 @@ async def sendMessage(senderService, citiesList) -> None:
 
     except Exception as error:
         logging.error(error)
-        return error.args
+        return error.args """
