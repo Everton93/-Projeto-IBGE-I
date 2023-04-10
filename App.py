@@ -6,10 +6,10 @@ from SendData import SendDataIBGE as sendIBGE
 import Requests_IBGE.RequestsIBGE as searchData
 from dotenv import load_dotenv, find_dotenv
 import os
-# from azure.servicebus.aio import ServiceBusClient as client
-from boto.sqs.connection import SQSConnection as connection
 import boto 
-import boto3
+
+# from azure.servicebus.aio import ServiceBusClient as client
+
 
 
 async def main(senderService) -> None:
@@ -19,7 +19,7 @@ async def main(senderService) -> None:
         pageList = await parseEstados.obterListaEstados(pageHtml)
         listStates = await parseEstados.obterListaEstados(pageHtml)
         citiesListRequest = await parseMunicipios.obterListaMunicipios(pageHtml, listStates)
-        await sendIBGE.sendMessage(senderService, os.getenv('AWS_REGION'), citiesListRequest)
+        await sendIBGE.sendMessage(senderService, citiesListRequest)
 
         logging.debug('finished !!!')
 
@@ -35,8 +35,6 @@ if __name__ == "__main__":
 
     config = boto.connect_sqs(aws_access_key_id= os.getenv('AWS_SQS_ACESS_KEY'),
                                 aws_secret_access_key= os.getenv('AWS_SQS_SECRET_KEY'))       
-    
-    
     
     _senderService = boto.sqs.queue.Queue(connection=config, 
                                          url=os.getenv('AWS_SQS_URL'))

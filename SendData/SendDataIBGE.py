@@ -2,9 +2,9 @@ import logging
 from azure.servicebus import ServiceBusMessage
 import json
 import jsonpickle
-import boto
-from boto import sqs
-async def sendMessage(senderService ,region,citiesList) -> None:
+
+
+async def sendMessage(senderService, citiesList) -> None:
 
     try:
         jsonpickle.set_preferred_backend('json')
@@ -17,7 +17,6 @@ async def sendMessage(senderService ,region,citiesList) -> None:
             cityJsonMessage = jsonpickle.dumps(city, unpicklable=False)
             _message = senderService.new_message(body=cityJsonMessage)            
             senderService.write(_message)    
-            print("")   
 
         logging.debug('send message is sucessfuly !!!')
 
