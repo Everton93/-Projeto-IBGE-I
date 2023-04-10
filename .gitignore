@@ -1,10 +1,10 @@
 .env
 .gitignore
-Projeto IBGE I/Parse_IBGE/__pycache__/ParseEstadosIBGE.cpython-311.pyc
-Projeto IBGE I/Parse_IBGE/__pycache__/ParseMunicipiosIBGE.cpython-311.pyc
-Projeto IBGE I/Requests_IBGE/__pycache__/RequestsIBGE.cpython-311.pyc
-Projeto IBGE I/Model/__pycache__/Estados.cpython-311.pyc
-Projeto IBGE I/Model/__pycache__/Municipio.cpython-311.pyc
-Projeto IBGE I/SendData/__pycache__/SendDataIBGE.cpython-311.pyc
+./Parse_IBGE/__pycache__/ParseEstadosIBGE.cpython-311.pyc
+./Parse_IBGE/__pycache__/ParseMunicipiosIBGE.cpython-311.pyc
+./Requests_IBGE/__pycache__/RequestsIBGE.cpython-311.pyc
+./Model/__pycache__/Estados.cpython-311.pyc
+./Model/__pycache__/Municipio.cpython-311.pyc
+./SendData/__pycache__/SendDataIBGE.cpython-311.pyc
 
 
