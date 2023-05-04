@@ -16,7 +16,6 @@ async def main(senderService) -> None:
 
     try:
         pageHtml = await searchData.obterPaginaIbge()
-        pageList = await parseEstados.obterListaEstados(pageHtml)
         listStates = await parseEstados.obterListaEstados(pageHtml)
         citiesListRequest = await parseMunicipios.obterListaMunicipios(pageHtml, listStates)
         await sendIBGE.sendMessage(senderService, citiesListRequest)
@@ -27,6 +26,7 @@ async def main(senderService) -> None:
         logging.error(error)
         return error.args
 
+    
 if __name__ == "__main__":
     load_dotenv()
     logging.basicConfig(level=logging.DEBUG,
