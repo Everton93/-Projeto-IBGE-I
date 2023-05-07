@@ -24,14 +24,21 @@ async def main(senderService) -> None:
 
     except Exception as error:
         logging.error(error)
-        return error.args
-
     
 if __name__ == "__main__":
+    
+    logging.debug("initialize configuration")
+    
     load_dotenv()
     logging.basicConfig(level=logging.DEBUG,
                         format='%(name)s - %(levelname)s - %(message)s')
-    logging.debug("initialize configuration")
+    
+    logger = logging.getLogger()
+    logger.addHandler(logging.StreamHandler()) 
+    logger.setLevel(logging.DEBUG)
+    logging.getLogger('boto').setLevel(logging.CRITICAL)   
+    
+    
 
     config = boto.connect_sqs(aws_access_key_id= os.getenv('AWS_SQS_ACESS_KEY'),
                                 aws_secret_access_key= os.getenv('AWS_SQS_SECRET_KEY'))       

@@ -25,12 +25,11 @@ async def obterPaginaIbge() -> str:
 
                 if response.status != 200:
                     logging.critical(response.text)
-                    return aiohttp.ClientResponseError(response.status, response.text)
+                    raise aiohttp.ClientResponseError(response.status, response.text)
                 else:
                     html = await response.text()
                     logging.info('Getting Page Sucessfuly !!!')
                     return html
 
     except Exception as error:
-        logging.error(error)
-        return  error.args
+        
