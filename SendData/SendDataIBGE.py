@@ -1,7 +1,6 @@
 import logging
-#from azure.servicebus import ServiceBusMessage
-import json
 import jsonpickle
+import os
 
 
 async def sendMessage(senderService, citiesList) -> None:
@@ -10,36 +9,16 @@ async def sendMessage(senderService, citiesList) -> None:
         jsonpickle.set_preferred_backend('json')
         jsonpickle.set_encoder_options('json', ensure_ascii=False)
 
-        logging.debug('sending messages ...')
+        logging.debug('Sending messages ...')
 
-        
         for city in citiesList:
             cityJsonMessage = jsonpickle.dumps(city, unpicklable=False)
-            _message = senderService.new_message(body=cityJsonMessage)            
-            senderService.write(_message)    
+            response = senderService.send_message(QueueUrl=os.getenv('AWS_SQS_URL'),
+                                                  DelaySeconds=10,
+                                                  MessageBody=cityJsonMessage,
+                                                  MessageAttributes={})
 
         logging.debug('send message is sucessfuly !!!')
 
     except Exception as error:
-        logging.error(error)
-        return error.args
-    
-""" Metodo de envio de mensagens pela plataforma AZURE"""    
-""" async def sendMessage(senderService, citiesList) -> None:
-
-    try:
-        jsonpickle.set_preferred_backend('json')
-        jsonpickle.set_encoder_options('json', ensure_ascii=False)
-
-        logging.debug('sending messages ...')
-
-        for city in citiesList:
-            cityJsonMessage = jsonpickle.dumps(city, unpicklable=False)
-            message = ServiceBusMessage(cityJsonMessage)
-            await senderService.send_messages(message)
-
-        logging.debug('send message is sucessfuly !!!')
-
-    except Exception as error:
-        logging.error(error)
-        return error.args """
+        raise Exception(error)

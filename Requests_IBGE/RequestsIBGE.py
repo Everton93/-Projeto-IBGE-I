@@ -32,4 +32,4 @@ async def obterPaginaIbge() -> str:
                     return html
 
     except Exception as error:
-        
+        raise Exception(error)

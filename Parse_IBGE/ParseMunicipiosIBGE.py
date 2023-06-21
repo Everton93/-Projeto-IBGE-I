@@ -27,8 +27,7 @@ async def obterListaMunicipios(html, listStates):
         logging.info('Parse Cities Sucessfuly !!!')
         return municipioList
     except Exception as error:
-        logging.error(error)
-        return  error.args
+        raise Exception(error)
     
 async def obterEstado(listStates, i):
     return listStates[i]  

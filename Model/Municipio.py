@@ -6,4 +6,4 @@ class Municipio():
         
     nomeMunicipio : str
     codigoMunicipio : int 
-    estado : Estados
+    estado : Estados    

@@ -20,5 +20,4 @@ async def obterListaEstados(html):
         return estadoList
 
     except Exception as error:
-        logging.error(error)
-        return  error.args
+        raise Exception(error)

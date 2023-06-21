@@ -6,11 +6,7 @@ from SendData import SendDataIBGE as sendIBGE
 import Requests_IBGE.RequestsIBGE as searchData
 from dotenv import load_dotenv, find_dotenv
 import os
-import boto 
-
-# from azure.servicebus.aio import ServiceBusClient as client
-
-
+import boto3
 
 async def main(senderService) -> None:
 
@@ -24,26 +20,22 @@ async def main(senderService) -> None:
 
     except Exception as error:
         logging.error(error)
-    
-if __name__ == "__main__":
-    
-    logging.debug("initialize configuration")
-    
-    load_dotenv()
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(name)s - %(levelname)s - %(message)s')
-    
-    logger = logging.getLogger()
-    logger.addHandler(logging.StreamHandler()) 
-    logger.setLevel(logging.DEBUG)
-    logging.getLogger('boto').setLevel(logging.CRITICAL)   
-    
-    
 
-    config = boto.connect_sqs(aws_access_key_id= os.getenv('AWS_SQS_ACESS_KEY'),
-                                aws_secret_access_key= os.getenv('AWS_SQS_SECRET_KEY'))       
-    
-    _senderService = boto.sqs.queue.Queue(connection=config, 
-                                         url=os.getenv('AWS_SQS_URL'))
-            
-asyncio.run(main(_senderService))
+if __name__ == "__main__":
+
+    logging.debug("initialize configuration")
+
+    load_dotenv()
+    logging.basicConfig(level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger()
+    logger.addHandler(logging.StreamHandler())  # Writes to console
+    logger.setLevel(logging.DEBUG)
+    logging.getLogger('boto3').setLevel(logging.CRITICAL)
+    logging.getLogger('botocore').setLevel(logging.CRITICAL)
+    logging.getLogger('urllib3').setLevel(logging.CRITICAL)
+
+    _sqsClient = boto3.client('sqs', region_name=os.getenv('AWS_REGION'),
+                          aws_secret_access_key=os.getenv('AWS_SQS_SECRET_KEY'),
+                          aws_access_key_id=os.getenv('AWS_SQS_ACESS_KEY'))
+
+asyncio.run(main(_sqsClient))
